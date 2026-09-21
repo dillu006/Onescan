@@ -360,7 +360,7 @@ var SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYm
     else if(a==='changeemail'){ S.step='email'; S.err=''; render(); }
     else if(a==='verify'){
       S.busy=true;S.err='';render();
-      sb.auth.verifyOtp({email:S.email,token:val('cd'),type:'email'}).then(function(r){
+      sb.auth.verifyOtp({email:S.email,token:val('cd').replace(/\s/g,''),type:'email'}).then(function(r){ if(r.error){ return sb.auth.verifyOtp({email:S.email,token:val('cd').replace(/\s/g,''),type:'signup'}); } return r; }).then(function(r){
         S.busy=false; if(r.error){S.err='That code is not right or has expired.';render();}
       });
     }
